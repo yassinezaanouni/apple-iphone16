@@ -39,6 +39,10 @@ const Model = () => {
     }
   }, [size]);
 
+  if (typeof window === "undefined" || !document) {
+    return null;
+  }
+
   return (
     <section className="big-container">
       <h2 className="text-foreground text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-[3.5rem] font-bold">
@@ -76,7 +80,7 @@ const Model = () => {
               right: 0,
               overflow: "hidden",
             }}
-            eventSource={document.getElementsByTagName("body")[0]}
+            eventSource={document.querySelector("body")!}
           >
             <View.Port />
           </Canvas>
@@ -89,7 +93,11 @@ const Model = () => {
               {models.map((item, i) => (
                 <li
                   key={i}
-                  className="size-6 rounded-full mx-2 cursor-pointer"
+                  className={`size-6 rounded-full mx-2 cursor-pointer ${
+                    model.color[0] === item.color[0]
+                      ? "ring-2 ring-foreground"
+                      : ""
+                  }`}
                   style={{
                     backgroundColor: item.color[0],
                   }}

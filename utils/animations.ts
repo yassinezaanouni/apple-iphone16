@@ -1,13 +1,21 @@
 import gsap from "gsap";
-
 import { ScrollTrigger } from "gsap/all";
+import { MutableRefObject } from "react";
+
 gsap.registerPlugin(ScrollTrigger);
 
-export const animateWithGsap = (target, animationProps, scrollProps) => {
+type AnimationProps = gsap.TweenVars;
+type ScrollProps = gsap.plugins.ScrollTriggerInstanceVars;
+
+export const animateWithGsap = (
+  target: gsap.TweenTarget,
+  animationProps: AnimationProps,
+  scrollProps?: ScrollProps
+) => {
   gsap.to(target, {
     ...animationProps,
     scrollTrigger: {
-      trigger: target,
+      trigger: target as gsap.DOMTarget,
       toggleActions: "restart reverse restart reverse",
       start: "top 85%",
       ...scrollProps,
@@ -15,13 +23,15 @@ export const animateWithGsap = (target, animationProps, scrollProps) => {
   });
 };
 
+type TimelineTarget = gsap.TweenTarget;
+
 export const animateWithGsapTimeline = (
-  timeline,
-  rotationRef,
-  rotationState,
-  firstTarget,
-  secondTarget,
-  animationProps
+  timeline: gsap.core.Timeline,
+  rotationRef: MutableRefObject<{ rotation: { y: number } }>,
+  rotationState: number,
+  firstTarget: TimelineTarget,
+  secondTarget: TimelineTarget,
+  animationProps: AnimationProps
 ) => {
   timeline.to(rotationRef.current.rotation, {
     y: rotationState,
