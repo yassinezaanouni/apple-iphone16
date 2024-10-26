@@ -5,7 +5,7 @@ import { ScrollTrigger } from "gsap/all";
 gsap.registerPlugin(ScrollTrigger);
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { hightlightsSlides } from "../constants";
+import { hightlightsSlides } from "@/utils/constants";
 import {
   Carousel,
   CarouselContent,

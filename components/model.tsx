@@ -4,7 +4,7 @@ import ModelView from "./model-view";
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import { View } from "@react-three/drei";
-import { models, sizes } from "@/constants";
+import { models, sizes } from "@/utils/constants";
 import gsap from "gsap";
 import { animateWithGsapTimeline } from "@/utils/animations";
 

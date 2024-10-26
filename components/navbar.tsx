@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { navLists } from "@/constants";
+import { navLists } from "@/utils/constants";
 
 const Navbar = () => {
   return (
