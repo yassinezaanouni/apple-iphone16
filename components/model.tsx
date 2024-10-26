@@ -1,10 +1,12 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ModelView from "./model-view";
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import { View } from "@react-three/drei";
 import { models, sizes } from "@/constants";
+import gsap from "gsap";
+import { animateWithGsapTimeline } from "@/utils/animations";
 
 const Model = () => {
   const [size, setSize] = useState("small");
@@ -21,6 +23,21 @@ const Model = () => {
   //rotation
   const [smallRotation, setSmallRotation] = useState(0);
   const [largeRotation, setLargeRotation] = useState(0);
+
+  const tl = gsap.timeline();
+  useEffect(() => {
+    if (size === "large") {
+      animateWithGsapTimeline(tl, small, smallRotation, "#view1", "#view2", {
+        transform: "translateX(-100%)",
+        duration: 2,
+      });
+    } else {
+      animateWithGsapTimeline(tl, large, largeRotation, "#view2", "#view1", {
+        transform: "translateX(0)",
+        duration: 2,
+      });
+    }
+  }, [size]);
 
   return (
     <section className="big-container">
@@ -50,8 +67,16 @@ const Model = () => {
           />
 
           <Canvas
-            className="w-full h-full fixed inset-0 overflow-hidden"
-            eventSource={document.getElementById("root")!}
+            className="w-full h-full"
+            style={{
+              position: "fixed",
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              overflow: "hidden",
+            }}
+            eventSource={document.getElementsByTagName("body")[0]}
           >
             <View.Port />
           </Canvas>
@@ -74,14 +99,23 @@ const Model = () => {
                 ></li>
               ))}
             </ul>
-            <button className="flex items-center justify-center p-1 rounded-full bg-gray-300 backdrop-blur ml-3 gap-1">
+            <button className="flex items-center justify-center p-1 rounded-full bg-gray-300 backdrop-blur ml-3 gap-1 relative">
+              <span
+                className="absolute w-10 h-10 bg-white rounded-full transition-all duration-300 ease-in-out"
+                style={{
+                  left:
+                    sizes.findIndex((item) => item.value === size) * 40 +
+                    (sizes.findIndex((item) => item.value === size) === 1
+                      ? 8
+                      : 4) +
+                    "px",
+                }}
+              />
               {sizes.map((item, i) => (
                 <span
                   key={i}
-                  className={`w-10 h-10 text-sm flex justify-center items-center rounded-full transition-all ${
-                    size === item.value
-                      ? "bg-white text-black"
-                      : "bg-transparent text-white"
+                  className={`w-10 h-10 text-sm flex justify-center items-center rounded-full transition-all z-10 ${
+                    size === item.value ? "text-background" : "text-foreground"
                   }`}
                   onClick={() => {
                     setSize(item.value);

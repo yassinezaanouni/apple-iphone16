@@ -1,9 +1,4 @@
-import {
-  Html,
-  OrbitControls,
-  PerspectiveCamera,
-  View,
-} from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera, View } from "@react-three/drei";
 
 import * as THREE from "three";
 
@@ -38,7 +33,6 @@ const ModelView = ({
       id={gsapType}
       className={`w-full h-full absolute ${index === 2 ? "right-[-100%]" : ""}`}
     >
-      {/* Ambient Light */}
       <ambientLight intensity={0.3} />
 
       <PerspectiveCamera makeDefault position={[0, 0, 4]} />
@@ -54,7 +48,6 @@ const ModelView = ({
         target={new THREE.Vector3(0, 0, 0)}
         onEnd={() => setRotationState(controlRef.current.getAzimuthalAngle())}
       />
-
       <group
         ref={groupRef}
         name={`${index === 1} ? 'small' : 'large`}
